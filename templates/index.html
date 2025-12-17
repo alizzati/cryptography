@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skripsi Crypto - Hill Cipher & Rabin</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <h1>🔐 Analisis Efisiensi Pengamanan Citra</h1>
+        <p>Implementasi Algoritma Hill Cipher & Kunci Publik Rabin-p</p>
+    </div>
+
+    <div class="main-content">
+        
+        <div class="card">
+            <div class="card-title">🔒 PROSES ENKRIPSI (PENGIRIM)</div>
+            <form action="/" method="POST" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label>1. Upload Gambar Asli (JPG/PNG)</label>
+                    <input type="file" name="image" required>
+                </div>
+                <input type="hidden" name="action" value="encrypt">
+                <button type="submit" class="btn btn-encrypt">Generate Kunci & Enkripsi</button>
+            </form>
+
+            {% if mode == 'encrypt' %}
+            <div class="result-area">
+                <h3>Hasil Enkripsi (Cipher Image)</h3>
+                <img src="data:image/png;base64,{{ image_data }}" alt="Encrypted">
+                
+                <div class="key-box">
+                    <strong>📦 INFO KUNCI (Untuk Disimpan):</strong><br><br>
+                    1. Matriks Hill (Rahasia):<br>
+                    {{ hill_key }}<br><br>
+                    2. Rabin Public Key (N): {{ rabin_n }}<br>
+                    3. Rabin Private Key (p, q): {{ rabin_p }}, {{ rabin_q }}<br><br>
+                    <em>*Simulasi: Kunci Hill ini yang dikirim setelah dibungkus Rabin.</em>
+                </div>
+                <br>
+                <small>Klik kanan gambar -> Save As untuk menyimpan.</small>
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="card">
+            <div class="card-title">🔓 PROSES DEKRIPSI (PENERIMA)</div>
+            <form action="/" method="POST" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label>1. Upload Gambar Terenkripsi (Cipher)</label>
+                    <input type="file" name="image" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>2. Masukkan Kunci Matriks Hill (2x2)</label>
+                    <div class="input-grid">
+                        <input type="number" name="k00" placeholder="00" required>
+                        <input type="number" name="k01" placeholder="01" required>
+                        <input type="number" name="k10" placeholder="10" required>
+                        <input type="number" name="k11" placeholder="11" required>
+                    </div>
+                </div>
+
+                <input type="hidden" name="action" value="decrypt">
+                <button type="submit" class="btn btn-decrypt">Dekripsi Gambar</button>
+            </form>
+
+            {% if mode == 'decrypt' %}
+            <div class="result-area">
+                <h3>Hasil Dekripsi (Plain Image)</h3>
+                <img src="data:image/png;base64,{{ image_data }}" alt="Decrypted">
+                <p style="color: green; font-weight: bold; margin-top: 10px;">✅ Gambar Berhasil Kembali!</p>
+            </div>
+            {% endif %}
+            
+            {% if error %}
+            <div class="result-area" style="background: #ffebee; color: red;">
+                <strong>Error:</strong> {{ error }}
+            </div>
+            {% endif %}
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>
