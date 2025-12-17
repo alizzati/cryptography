@@ -1,13 +1,11 @@
 import numpy as np
 
 def gcd(a, b):
-    """Mencari Faktor Persekutuan Terbesar"""
     while b:
         a, b = b, a % b
     return a
 
 def modInverse(a, m):
-    """Mencari Invers Modulo (Algoritma Extended Euclidean)"""
     m0 = m
     y = 0
     x = 1
@@ -26,11 +24,14 @@ def modInverse(a, m):
     return x
 
 def matrix_mod_inverse(matrix, modulus):
-    """Mencari Invers Matriks dalam Modulo tertentu"""
+    # Hitung determinan dengan pembulatan yang aman
     det = int(np.round(np.linalg.det(matrix)))
     det_inv = modInverse(det, modulus)
     
+    # Hitung Invers menggunakan Adjoin (Inverse * det)
+    # Ini trik agar kita tidak bermain dengan float 1/det
     matrix_inv = np.linalg.inv(matrix) * det
     matrix_inv = np.round(matrix_inv).astype(int)
     
+    # Hasil akhir modulo modulus
     return (matrix_inv * det_inv) % modulus

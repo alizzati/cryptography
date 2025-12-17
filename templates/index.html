@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Skripsi Crypto - Hill Cipher & Rabin</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="../static/css/style.css">
 </head>
 <body>
 
@@ -32,13 +32,23 @@
                 <h3>Hasil Enkripsi (Cipher Image)</h3>
                 <img src="data:image/png;base64,{{ image_data }}" alt="Encrypted">
                 
+                <div class="key-box" style="background: #f0f9ff; color: #000; border: 1px solid #bae6fd;">
+                    <strong>📊 HASIL ANALISIS (Data Paper):</strong>
+                    <ul style="margin: 5px 0 10px 20px;">
+                        <li><strong>Entropy Asli:</strong> {{ entropy_orig }} (Target: ~7.xx)</li>
+                        <li><strong>Entropy Enkripsi:</strong> {{ entropy_enc }} (Target: mendekati 8.0)</li>
+                        <li><strong>Korelasi (NPCR):</strong> {{ correlation }} (Target: mendekati 0)</li>
+                        <li><strong>PSNR:</strong> {{ psnr }} dB</li>
+                        <li><strong>Waktu Komputasi:</strong> {{ time_taken }} detik</li>
+                    </ul>
+                </div>
+
                 <div class="key-box">
-                    <strong>📦 INFO KUNCI (Untuk Disimpan):</strong><br><br>
-                    1. Matriks Hill (Rahasia):<br>
+                    <strong>📦 INFO KUNCI (Untuk Disimpan):</strong><br>
+                    Matriks Hill (Kunci Simetris):<br>
                     {{ hill_key }}<br><br>
-                    2. Rabin Public Key (N): {{ rabin_n }}<br>
-                    3. Rabin Private Key (p, q): {{ rabin_p }}, {{ rabin_q }}<br><br>
-                    <em>*Simulasi: Kunci Hill ini yang dikirim setelah dibungkus Rabin.</em>
+                    Rabin Public Key (N): {{ rabin_n }}<br>
+                    Rabin Private Key (p, q): {{ rabin_p }}, {{ rabin_q }}
                 </div>
                 <br>
                 <small>Klik kanan gambar -> Save As untuk menyimpan.</small>

@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request
 from modules.hill_cipher import generate_hill_key, process_image_hill
-from modules.rabin import generate_rabin_keys, rabin_encrypt_val
+from modules.rabin_p import generate_rabin_keys, rabin_encrypt_val  # FIXED: rabin -> rabin_p
+from modules.analysis import calculate_entropy, calculate_correlation, calculate_psnr # NEW: Untuk Paper
 from PIL import Image
 import numpy as np
 import io
@@ -36,13 +37,21 @@ def home():
                 # 2. Generate Kunci Rabin (Asimetris)
                 n, p, q = generate_rabin_keys()
                 
-                # 3. Proses Enkripsi Gambar
+                # 3. Hitung Metrik Gambar ASLI (Sebelum Enkripsi) - Untuk Data Paper
+                entropy_original = calculate_entropy(img)
+                
+                # 4. Proses Enkripsi Gambar
                 start_time = time.time()
                 cipher_img = process_image_hill(img, hill_key, 'encrypt')
                 end_time = time.time()
                 
-                # 4. Simulasi Pengamanan Kunci (Opsional, ditampilkan datanya)
-                # Misal: Mengenkripsi salah satu elemen matriks menggunakan Rabin
+                # 5. Hitung Metrik Gambar HASIL (Setelah Enkripsi) - Untuk Data Paper
+                entropy_cipher = calculate_entropy(cipher_img)
+                correlation_val = calculate_correlation(img, cipher_img)
+                psnr_val = calculate_psnr(img, cipher_img)
+                
+                # 6. Simulasi Pengamanan Kunci
+                # Mengenkripsi elemen pertama matriks Hill menggunakan Rabin Public Key
                 encrypted_key_element = rabin_encrypt_val(int(hill_key[0][0]), n)
                 
                 return render_template('index.html', 
@@ -52,7 +61,12 @@ def home():
                                        rabin_n=n,
                                        rabin_p=p,
                                        rabin_q=q,
-                                       time_taken=end_time-start_time)
+                                       time_taken=end_time-start_time,
+                                       # Data Analisis untuk Paper
+                                       entropy_orig=round(entropy_original, 5),
+                                       entropy_enc=round(entropy_cipher, 5),
+                                       correlation=round(correlation_val, 5),
+                                       psnr=round(psnr_val, 5))
 
             # --- SKENARIO DEKRIPSI ---
             elif action == 'decrypt':
@@ -76,7 +90,7 @@ def home():
                     return render_template('index.html', error=f"Kunci Salah atau Tidak Valid: {e}")
 
         except Exception as e:
-             return render_template('index.html', error=f"Terjadi Kesalahan File: {e}")
+             return render_template('index.html', error=f"Terjadi Kesalahan: {e}")
 
     return render_template('index.html')
 
