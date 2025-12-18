@@ -32,26 +32,35 @@
                 <h3>Hasil Enkripsi (Cipher Image)</h3>
                 <img src="data:image/png;base64,{{ image_data }}" alt="Encrypted">
                 
-                <div class="key-box" style="background: #f0f9ff; color: #000; border: 1px solid #bae6fd;">
-                    <strong>📊 HASIL ANALISIS (Data Paper):</strong>
-                    <ul style="margin: 5px 0 10px 20px;">
-                        <li><strong>Entropy Asli:</strong> {{ entropy_orig }} (Target: ~7.xx)</li>
-                        <li><strong>Entropy Enkripsi:</strong> {{ entropy_enc }} (Target: mendekati 8.0)</li>
-                        <li><strong>Korelasi (NPCR):</strong> {{ correlation }} (Target: mendekati 0)</li>
-                        <li><strong>PSNR:</strong> {{ psnr }} dB</li>
-                        <li><strong>Waktu Komputasi:</strong> {{ time_taken }} detik</li>
-                    </ul>
+                <div style="display: flex; gap: 10px; margin-top: 20px; flex-wrap: wrap;">
+                    <div style="flex: 1; min-width: 300px;">
+                        <img src="data:image/png;base64,{{ hist_orig }}" style="width: 100%; border: 1px solid #ddd;">
+                        <p><small>Histogram Asli (Pola Terlihat)</small></p>
+                    </div>
+                    <div style="flex: 1; min-width: 300px;">
+                        <img src="data:image/png;base64,{{ hist_enc }}" style="width: 100%; border: 1px solid #ddd;">
+                        <p><small>Histogram Enkripsi (Rata/Uniform)</small></p>
+                    </div>
+                </div>
+
+                <div class="key-box" style="background: #f0f9ff; color: #000; border: 1px solid #bae6fd; margin-top: 20px;">
+                    <strong>📊 DATA ANALISIS (Simpan untuk Paper):</strong>
+                    <table style="width: 100%; margin-top: 10px; font-size: 0.9em;">
+                        <tr><td>Entropy Asli</td><td>: {{ entropy_orig }}</td></tr>
+                        <tr><td>Entropy Cipher</td><td>: <strong>{{ entropy_enc }}</strong> (Target > 7.99)</td></tr>
+                        <tr><td>Korelasi</td><td>: {{ correlation }} (Target ~0)</td></tr>
+                        <tr><td>NPCR</td><td>: {{ npcr }} % (Target > 99.6%)</td></tr>
+                        <tr><td>UACI</td><td>: {{ uaci }} % (Target ~33.4%)</td></tr>
+                        <tr><td>PSNR</td><td>: {{ psnr }} dB</td></tr>
+                        <tr><td>Waktu</td><td>: {{ time_taken }} detik</td></tr>
+                    </table>
                 </div>
 
                 <div class="key-box">
-                    <strong>📦 INFO KUNCI (Untuk Disimpan):</strong><br>
-                    Matriks Hill (Kunci Simetris):<br>
-                    {{ hill_key }}<br><br>
-                    Rabin Public Key (N): {{ rabin_n }}<br>
-                    Rabin Private Key (p, q): {{ rabin_p }}, {{ rabin_q }}
+                    <strong>📦 INFO KUNCI:</strong><br>
+                    Matriks Hill: {{ hill_key }}<br>
+                    Rabin (N): {{ rabin_n }}
                 </div>
-                <br>
-                <small>Klik kanan gambar -> Save As untuk menyimpan.</small>
             </div>
             {% endif %}
         </div>
