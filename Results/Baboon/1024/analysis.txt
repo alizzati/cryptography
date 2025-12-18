@@ -1,0 +1,12 @@
+DATA ANALISIS :
+Entropy Asli	: 7.71996
+Entropy Cipher	: 7.99951 (Target > 7.99)
+Korelasi	: 0.00025 (Target ~0)
+NPCR	: 99.5845 % (Target > 99.6%)
+UACI	: 29.621 % (Target ~33.4%)
+PSNR	: 27.89764 dB
+Waktu	: 0.27338528633117676 detik
+
+INFO KUNCI:
+Matriks Hill: [[194, 181], [219, 44]]
+Rabin (N): 175793

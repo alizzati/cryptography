@@ -44,7 +44,7 @@
                 </div>
 
                 <div class="key-box" style="background: #f0f9ff; color: #000; border: 1px solid #bae6fd; margin-top: 20px;">
-                    <strong>📊 DATA ANALISIS (Simpan untuk Paper):</strong>
+                    <strong>DATA ANALISIS:</strong>
                     <table style="width: 100%; margin-top: 10px; font-size: 0.9em;">
                         <tr><td>Entropy Asli</td><td>: {{ entropy_orig }}</td></tr>
                         <tr><td>Entropy Cipher</td><td>: <strong>{{ entropy_enc }}</strong> (Target > 7.99)</td></tr>
@@ -57,7 +57,7 @@
                 </div>
 
                 <div class="key-box">
-                    <strong>📦 INFO KUNCI:</strong><br>
+                    <strong>INFO KUNCI:</strong><br>
                     Matriks Hill: {{ hill_key }}<br>
                     Rabin (N): {{ rabin_n }}
                 </div>
@@ -69,9 +69,15 @@
             <div class="card-title">🔓 PROSES DEKRIPSI (PENERIMA)</div>
             <form action="/" method="POST" enctype="multipart/form-data">
                 <div class="form-group">
-                    <label>1. Upload Gambar Terenkripsi (Cipher)</label>
+                    <label>1. Upload Gambar Terenkripsi (Cipher) *Wajib</label>
                     <input type="file" name="image" required>
                 </div>
+                
+                <!-- <div class="form-group" style="background: #eef; padding: 10px; border-radius: 5px;">
+                    <label>2. Upload Gambar Asli (Opsional)</label>
+                    <input type="file" name="original_image_verify">
+                    <small style="color: #666;">*Upload gambar asli jika ingin melihat nilai MSE & PSNR.</small>
+                </div> -->
                 
                 <div class="form-group">
                     <label>2. Masukkan Kunci Matriks Hill (2x2)</label>
@@ -91,7 +97,30 @@
             <div class="result-area">
                 <h3>Hasil Dekripsi (Plain Image)</h3>
                 <img src="data:image/png;base64,{{ image_data }}" alt="Decrypted">
-                <p style="color: green; font-weight: bold; margin-top: 10px;">✅ Gambar Berhasil Kembali!</p>
+                
+                <!-- <div style="margin-top: 15px;">
+                    <img src="data:image/png;base64,{{ hist_dec }}" style="width: 100%; border: 1px solid #ddd;">
+                    <p><small>Histogram Hasil Dekripsi</small></p>
+                </div> -->
+
+                <!-- <div class="key-box" style="background: #f0f9ff; color: #000; border: 1px solid #bae6fd; margin-top: 20px;">
+                    <strong>📊 VALIDASI DEKRIPSI:</strong>
+                    <table style="width: 100%; margin-top: 10px; font-size: 0.9em;">
+                        <tr><td>Waktu Dekripsi</td><td>: {{ time_taken }} detik</td></tr>
+                        <tr><td>Entropy Hasil</td><td>: {{ entropy_dec }}</td></tr>
+                        
+                        {% if analysis %}
+                        <tr><td colspan="2"><hr><strong>Perbandingan dengan Asli:</strong></td></tr>
+                        <tr><td>MSE (Error)</td><td>: <strong>{{ analysis.mse }}</strong> (Target: 0.0)</td></tr>
+                        <tr><td>PSNR (Kualitas)</td><td>: {{ analysis.psnr }} dB (Target: >50 / 100)</td></tr>
+                        <tr><td>Korelasi</td><td>: {{ analysis.correlation }} (Target: 1.0)</td></tr>
+                        {% else %}
+                        <tr><td colspan="2"><hr><em>*Upload gambar asli untuk lihat MSE & PSNR</em></td></tr>
+                        {% endif %}
+                    </table>
+                </div> -->
+
+                <!-- <p style="color: green; font-weight: bold; margin-top: 10px;">✅ Gambar Berhasil Kembali!</p> -->
             </div>
             {% endif %}
             
@@ -101,7 +130,6 @@
             </div>
             {% endif %}
         </div>
-
     </div>
 </div>
 
